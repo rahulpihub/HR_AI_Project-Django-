@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Question Generator</title>
+    <link rel="stylesheet" href="/static/css/ans.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Question Generator</h1>
+        <form id="questionForm" method="post">
+            {% csrf_token %}
+            <label for="job_title">Job Title:</label>
+            <input type="text" id="job_title" name="job_title" placeholder="Enter job title" required>
+            
+            <label for="job_description">Job Description:</label>
+            <textarea id="job_description" name="job_description" placeholder="Enter job description" required></textarea>
+            
+            <label for="question_type">Question Type:</label>
+            <select name="question_type" id="question_type" required>
+                <option value="Technical">Technical</option>
+                <option value="Behavioral">Behavioral</option>
+                <option value="Skill-based">Skill-based</option>
+            </select>
+            
+            <label for="num_questions">Number of Questions:</label>
+            <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="50" required>
+            
+            <input type="submit" value="Generate Questions">
+              <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+        </form>
+
+        {% if questions %}
+        <!-- Enhanced Result Section -->
+        <div id="resultSection" class="result-section">
+            <h2>Generated Questions:</h2>
+            <textarea id="generatedQuestions" readonly>{{ questions }}</textarea>
+            <div class="actions">
+                <a id="downloadLink" href="#" download="Generated_Questions.txt" class="download-btn">Download Questions</a>
+                <button id="copyButton" class="copy-btn">Copy to Clipboard</button>
+            </div>
+        </div>
+        {% elif error %}
+        <div class="error-message">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("questionForm");
+            const resultSection = document.getElementById("resultSection");
+            const generatedQuestions = document.getElementById("generatedQuestions");
+            const downloadLink = document.getElementById("downloadLink");
+            const copyButton = document.getElementById("copyButton");
+
+            // Display the result section only if questions exist
+            if (generatedQuestions && generatedQuestions.value) {
+                resultSection.style.display = 'block';
+
+                // Prepare the download link with the generated questions
+                const blob = new Blob([generatedQuestions.value], { type: "text/plain" });
+                downloadLink.href = URL.createObjectURL(blob);
+            }
+
+            // Copy functionality
+            copyButton.addEventListener("click", () => {
+                generatedQuestions.select();
+                document.execCommand("copy");
+                alert("Questions copied to clipboard!");
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Description Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/jobde.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Job Description Generator</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="job_title">Enter the Job Title:</label>
+            <input type="text" id="job_title" name="job_title" value="{{ job_title }}" placeholder="e.g. Software Engineer">
+            <button type="submit">Generate Job Description</button>
+        </form>
+
+        {% if job_description %}
+            <h2>Generated Job Description:</h2>
+            <p>{{ job_description }}</p>
+        {% elif error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <br>
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+    </div>
+</body>
+</html>

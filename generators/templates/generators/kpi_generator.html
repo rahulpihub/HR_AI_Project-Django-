@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KPI Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/kpi.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>KPI Generator</h1>
+      <p>
+        Generate key performance indicators (KPIs) for your business or project.
+      </p>
+
+      <!-- Form for KPI generation -->
+      <form id="kpiForm" method="POST">
+        {% csrf_token %}
+        <label for="business_name">Business or Project Name</label>
+        <input
+          type="text"
+          id="business_name"
+          name="business_name"
+          placeholder="e.g., E-commerce Store, Marketing Campaign"
+          required
+        />
+
+        <label for="goals">Primary Goals</label>
+        <textarea
+          id="goals"
+          name="goals"
+          placeholder="e.g., Increase sales, Improve customer satisfaction"
+          required
+        ></textarea>
+
+        <label for="metrics">Key Metrics to Track (optional)</label>
+        <textarea
+          id="metrics"
+          name="metrics"
+          placeholder="e.g., Conversion rate, Customer retention rate"
+        ></textarea>
+
+        <label for="time_frame">Time Frame (optional)</label>
+        <select id="time_frame" name="time_frame">
+          <option value="">Select an option</option>
+          <option value="Weekly">Weekly</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Quarterly">Quarterly</option>
+          <option value="Annually">Annually</option>
+        </select>
+
+        <button type="submit">Generate KPIs</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <!-- KPI Results Section -->
+      <div id="resultSection" style="display: none">
+        <h2>Generated KPIs:</h2>
+        <textarea id="generatedKPIs" readonly></textarea>
+        <a id="downloadLink" href="#" download="Generated_KPIs.txt"
+          >Download KPIs</a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("kpiForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              document.getElementById("resultSection").style.display = "block";
+              document.getElementById("generatedKPIs").value = data.kpis;
+
+              const downloadLink = document.getElementById("downloadLink");
+              downloadLink.href = URL.createObjectURL(
+                new Blob([data.kpis], { type: "text/plain" })
+              );
+            } else {
+              alert(data.error || "An error occurred.");
+            }
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        });
+    </script>
+  </body>
+</html>

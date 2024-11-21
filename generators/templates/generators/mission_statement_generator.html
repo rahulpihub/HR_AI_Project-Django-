@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Statement Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/msv.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Mission Statement Generator</h1>
+
+        <!-- Form to take input for company name and description -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="company_name">Company Name:</label>
+                <input type="text" id="company_name" name="company_name" value="{{ company_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="company_description">Company Description:</label>
+                <textarea id="company_description" name="company_description" required>{{ company_description }}</textarea>
+            </div>
+
+            <button type="submit">Generate Mission Statement</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% elif mission_statement %}
+            <h3>Generated Mission Statement:</h3>
+            <pre>{{ mission_statement }}</pre>
+        {% endif %}
+
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+    </div>
+</body>
+</html>

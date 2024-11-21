@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Summary Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/job_summary.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Job Summary Generator</h1>
+      <p>
+        Create professional and attention-grabbing job summaries effortlessly!
+      </p>
+
+      <!-- Form to input job title and company details -->
+      <form id="jobSummaryForm" method="POST">
+        {% csrf_token %}
+        <label for="job_title">Job Title</label>
+        <input
+          type="text"
+          id="job_title"
+          name="job_title"
+          placeholder="Example: Customer Service Agent"
+          required
+        />
+
+        <label for="company_details"
+          >Company Overview and Expectations (optional)</label
+        >
+        <textarea
+          id="company_details"
+          name="company_details"
+          placeholder="Example: Describe what makes your company unique and expectations for this role."
+        ></textarea>
+
+        <button type="submit">Generate Job Summary</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <!-- Display generated job summary -->
+      <div id="resultSection" style="display: none">
+        <h2>Generated Job Summary:</h2>
+        <textarea id="generatedSummary" readonly></textarea>
+        <a id="downloadLink" href="#" download="Job_Summary.txt"
+          >Download Summary</a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("jobSummaryForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              document.getElementById("resultSection").style.display = "block";
+              document.getElementById("generatedSummary").value =
+                data.job_summary;
+
+              const downloadLink = document.getElementById("downloadLink");
+              downloadLink.href = URL.createObjectURL(
+                new Blob([data.job_summary], { type: "text/plain" })
+              );
+            } else {
+              alert(data.error || "An error occurred.");
+            }
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        });
+    </script>
+  </body>
+</html>

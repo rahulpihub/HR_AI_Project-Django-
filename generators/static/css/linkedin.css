@@ -1,0 +1,135 @@
+/* Base reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Heading */
+h1 {
+    font-size: 2.5em;
+    color: #6200ea;
+    margin-bottom: 30px;
+}
+/* Labels */
+label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #34495e;
+}
+
+/* Input Fields */
+textarea,
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1em;
+    resize: none;
+    background: #ecf0f1;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus,
+input[type="text"]:focus {
+    border-color: #3498db;
+    outline: none;
+    background: #ffffff;
+}
+
+/* Button */
+button[type="submit"] {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #ffffff;
+    background: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: #2980b9;
+}
+
+/* Response Section */
+#responseSection {
+    margin-top: 20px;
+    padding: 20px;
+    background: #ecf9ec;
+    border: 1px solid #27ae60;
+    border-radius: 8px;
+    display: none; /* Will be displayed dynamically */
+}
+
+#responseSection h2 {
+    color: #27ae60;
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+/* Generated Bio Textarea */
+#generatedBio {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1em;
+    background: #f4f4f4;
+    resize: none;
+    color: #2c3e50;
+    font-family: 'Arial', sans-serif;
+}
+
+.home-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: #2ecc71;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.home-button:hover {
+    background-color: #27ae60;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+    }
+}

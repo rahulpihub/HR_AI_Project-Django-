@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkedIn Post Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/linkedin_post.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>LinkedIn Post Generator</h1>
+      <p>Create engaging LinkedIn posts effortlessly!</p>
+
+      <!-- Form to input post details -->
+      <form id="linkedinForm" method="POST">
+        {% csrf_token %}
+        <label for="post_details">Post Content</label>
+        <textarea
+          id="post_details"
+          name="post_details"
+          placeholder="What is your post about?"
+          required
+        ></textarea>
+
+        <label for="tone">Tone of Voice</label>
+        <select id="tone" name="tone">
+          <option value="Professional">Professional</option>
+          <option value="Energetic">Energetic</option>
+          <option value="Funny">Funny</option>
+        </select>
+
+        <label for="length">Output Length</label>
+        <select id="length" name="length">
+          <option value="Short">Short</option>
+          <option value="Medium">Medium</option>
+          <option value="Long">Long</option>
+        </select>
+
+        <button type="submit">Generate LinkedIn Post</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <!-- Display generated LinkedIn post -->
+      <div id="resultSection" style="display: none">
+        <h2>Generated LinkedIn Post:</h2>
+        <textarea id="generatedPost" readonly></textarea>
+        <a id="downloadLink" href="#" download="LinkedIn_Post.txt"
+          >Download Post</a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("linkedinForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              document.getElementById("resultSection").style.display = "block";
+              document.getElementById("generatedPost").value =
+                data.linkedin_post;
+
+              const downloadLink = document.getElementById("downloadLink");
+              downloadLink.href = URL.createObjectURL(
+                new Blob([data.linkedin_post], { type: "text/plain" })
+              );
+            } else {
+              alert(data.error || "An error occurred.");
+            }
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        });
+    </script>
+  </body>
+</html>

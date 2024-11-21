@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Answer Generator</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/interview.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>Interview Answer Generator</h1>
+    <form id="generatorForm" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="job_title">Job Title:</label>
+        <input
+          type="text"
+          id="job_title"
+          name="job_title"
+          placeholder="Enter the job title"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="interview_question">Interview Question:</label>
+        <textarea
+          id="interview_question"
+          name="interview_question"
+          placeholder="Enter the interview question"
+          required
+        ></textarea>
+      </div>
+
+      <input type="submit" value="Generate Answer" />
+    </form>
+    <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+
+    <!-- Enhanced Result Section -->
+    <div id="resultSection" class="result-section" style="display: none;">
+      <h2>Generated Interview Answer:</h2>
+      <div class="answer-box">
+        <textarea id="generatedAnswer" readonly></textarea>
+        <div class="actions">
+          <a id="downloadLink" href="#" download="Interview_Answer.txt" class="download-btn">Download Answer</a>
+          <button id="copyButton" class="copy-btn">Copy to Clipboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("generatorForm");
+      const resultSection = document.getElementById("resultSection");
+      const generatedAnswer = document.getElementById("generatedAnswer");
+      const downloadLink = document.getElementById("downloadLink");
+      const copyButton = document.getElementById("copyButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const jobTitle = document.getElementById("job_title").value;
+        const interviewQuestion = document.getElementById("interview_question").value;
+
+        if (jobTitle && interviewQuestion) {
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}",
+              },
+              body: new URLSearchParams({
+                job_title: jobTitle,
+                interview_question: interviewQuestion,
+              }),
+            });
+
+            if (response.ok) {
+              const answer = await response.text();
+              resultSection.style.display = "block";
+              generatedAnswer.value = answer;
+
+              const blob = new Blob([answer], { type: "text/plain" });
+              downloadLink.href = URL.createObjectURL(blob);
+            } else {
+              alert("Error generating answer. Please try again.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An unexpected error occurred.");
+          }
+        } else {
+          alert("Please provide both Job Title and Interview Question.");
+        }
+      });
+
+      // Copy functionality
+      copyButton.addEventListener("click", () => {
+        generatedAnswer.select();
+        document.execCommand("copy");
+        alert("Answer copied to clipboard!");
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Responsibilities Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/jobre.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Job Responsibilities Generator</h1>
+      <form method="POST">
+        {% csrf_token %}
+        <label for="job_title">Enter the Job Title:</label>
+        <input
+          type="text"
+          id="job_title"
+          name="job_title"
+          value="{{ job_title }}"
+          placeholder="e.g. Software Engineer"
+        />
+        <button type="submit">Generate Job Responsibilities</button>
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      {% if job_description %}
+      <h2>Generated Job Responsibilities:</h2>
+      <p>{{ job_description }}</p>
+      {% elif error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+
+      <br />
+      
+    </div>
+  </body>
+</html>

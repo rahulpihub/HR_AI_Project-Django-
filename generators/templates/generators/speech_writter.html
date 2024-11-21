@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speech Writer</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/speech.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Speech Writer</h1>
+      <form id="speech-form" method="POST">
+        {% csrf_token %}
+        
+        <label for="occasion">Occasion:</label>
+        <select id="occasion" name="occasion" required>
+          <option value="Wedding">Wedding</option>
+          <option value="Graduation">Graduation</option>
+          <option value="Birthday">Birthday</option>
+          <option value="Ear Piercing Ceremony">Ear Piercing Ceremony</option>
+          <option value="Baby Shower">Baby Shower</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="audience">Audience:</label>
+        <select id="audience" name="audience" required>
+          <option value="Friends">Friends</option>
+          <option value="Family">Family</option>
+          <option value="Colleagues">Colleagues</option>
+          <option value="General Public">General Public</option>
+        </select>
+
+        <label for="speech_length">Speech Length:</label>
+        <select id="speech_length" name="speech_length" required>
+          <option value="5 minutes">5 minutes</option>
+          <option value="10 minutes">10 minutes</option>
+          <option value="15 minutes">15 minutes</option>
+          <option value="20 minutes">20 minutes</option>
+        </select>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <label for="tone_of_voice">Tone of Voice:</label>
+        <select id="tone_of_voice" name="tone_of_voice" required>
+          <option value="Serious">Serious</option>
+          <option value="Motivational">Motivational</option>
+          <option value="Inspirational">Inspirational</option>
+          <option value="Humorous">Humorous</option>
+        </select>
+
+        <button type="submit">Generate Speech</button>
+      </form>
+
+      <div id="speech-output"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("speech-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          // Gather form data
+          const formData = new FormData(event.target);
+
+          try {
+            // Make the POST request to generate speech
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+
+            // Parse the response
+            const data = await response.json();
+
+            // Display the generated speech
+            if (data.speech) {
+              document.getElementById("speech-output").innerText = data.speech;
+            } else {
+              alert(data.error);
+            }
+          } catch (error) {
+            alert("Error generating speech. Please try again.");
+          }
+        });
+    </script>
+  </body>
+</html>

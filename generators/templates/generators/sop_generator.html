@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOP Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/sop.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>SOP Generator</h1>
+      <p>
+        Generate Standard Operating Procedures for your business or organization
+      </p>
+
+      <form id="sopForm" method="POST">
+        {% csrf_token %}
+        <label for="procedure">What is the procedure for?</label>
+        <input
+          type="text"
+          id="procedure"
+          name="procedure"
+          placeholder="Example: Data backup"
+          required
+        />
+
+        <label for="steps">Any specific steps or details?</label>
+        <textarea
+          id="steps"
+          name="steps"
+          placeholder="Example: Step 1: Identify the data to backup"
+          required
+        ></textarea>
+
+        <label for="additional_details">Any additional context or details?</label>
+        <textarea
+          id="additional_details"
+          name="additional_details"
+          placeholder="Example: This procedure is for weekly backup"
+          required
+        ></textarea>
+
+        <button type="submit">Generate SOP</button>
+
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <div id="responseSection" style="display: none">
+        <h2>Generated SOP:</h2>
+        <textarea id="generatedSop" readonly></textarea>
+        <button id="downloadButton">Download SOP</button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("sopForm");
+      const responseSection = document.getElementById("responseSection");
+      const generatedSop = document.getElementById("generatedSop");
+      const downloadButton = document.getElementById("downloadButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        try {
+          const response = await fetch("", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            responseSection.style.display = "block";
+            generatedSop.textContent = data.sop;
+
+            downloadButton.onclick = () => {
+              const blob = new Blob([data.sop], { type: "text/plain" });
+              const link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              link.download = "Standard_Operating_Procedure.txt";
+              link.click();
+            };
+          } else {
+            alert(data.error || "An error occurred while generating the SOP.");
+          }
+        } catch (error) {
+          alert("An unexpected error occurred.");
+        }
+      });
+    </script>
+  </body>
+</html>

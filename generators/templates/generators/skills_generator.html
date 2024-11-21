@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skills Generator for Job Roles</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/skl.css' %}" />
+  </head>
+  <body>
+    <h1>Skills Generator for Job Roles</h1>
+
+    <!-- Form to input job title -->
+    <form method="POST">
+      {% csrf_token %}
+      <label for="job_title">Job Title:</label>
+      <input
+        type="text"
+        id="job_title"
+        name="job_title"
+        value="{{ job_title }}"
+        required
+      /><br /><br />
+
+      <button type="submit">Generate Skills</button>
+    </form>
+
+    {% if error %}
+    <p style="color: red">{{ error }}</p>
+    {% elif skills %}
+    <h3>Generated Skills for {{ job_title }}:</h3>
+    <pre>{{ skills }}</pre>
+    {% endif %}
+
+    <!-- Button to go back to the home page -->
+    <br /><br />
+    <a href="{% url 'home' %}"><button>Back to Home</button></a>
+  </body>
+</html>

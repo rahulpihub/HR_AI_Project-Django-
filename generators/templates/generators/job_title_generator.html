@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Title Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/jobtle.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Job Title Generator from Job Description</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            <label for="job_description">Enter the job description:</label><br>
+            <textarea id="job_description" name="job_description" rows="5" cols="50">{{ request.POST.job_description }}</textarea><br><br>
+            <input type="submit" value="Generate Suitable Job Title">
+        </form>
+
+        {% if job_title %}
+            <h2>Suggested Job Title:</h2>
+            <pre>{{ job_title }}</pre>
+        {% elif error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

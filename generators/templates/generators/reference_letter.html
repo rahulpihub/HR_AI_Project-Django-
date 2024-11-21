@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Reference Letter Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/chre.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Character Reference Letter Generator</h1>
+        <form id="characterReferenceForm" method="POST">
+            {% csrf_token %}
+            <label for="recipient_name">Recipient's Name:</label>
+            <input type="text" name="recipient_name" id="recipient_name" placeholder="e.g., John Doe" required>
+
+            <label for="relationship">Your Relationship to the Subject:</label>
+            <input type="text" name="relationship" id="relationship" placeholder="e.g., Manager, Colleague" required>
+
+            <label for="strengths">Subject's Strengths:</label>
+            <textarea name="strengths" id="strengths" placeholder="e.g., Hardworking, reliable" required></textarea>
+
+            <label for="weaknesses">Subject's Weaknesses (Optional):</label>
+            <textarea name="weaknesses" id="weaknesses" placeholder="e.g., Struggles with time management"></textarea>
+
+            <label for="job_description">Job/Position Applied For:</label>
+            <input type="text" name="job_description" id="job_description" placeholder="e.g., Software Engineer" required>
+
+            <button type="submit">Generate Letter</button>
+            <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+        </form>
+
+        <div id="responseSection" style="display: none;">
+            <h2>Generated Character Reference Letter:</h2>
+            <textarea id="generatedLetter" readonly></textarea>
+            <a id="downloadBtn" href="#" download="character_reference_letter.txt">Download Letter</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("characterReferenceForm");
+        const responseSection = document.getElementById("responseSection");
+        const generatedLetter = document.getElementById("generatedLetter");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("{% url 'character_reference' %}", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseSection.style.display = "block";
+                    generatedLetter.textContent = data.letter;
+                    downloadBtn.href = URL.createObjectURL(new Blob([data.letter], { type: "text/plain" }));
+                } else {
+                    alert(data.error || "An error occurred while generating the letter.");
+                }
+            } catch (error) {
+                alert("An unexpected error occurred.");
+            }
+        });
+    </script>
+</body>
+</html>

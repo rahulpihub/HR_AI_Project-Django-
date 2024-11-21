@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer Letter Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/offl.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Offer Letter Generator</h1>
+
+        <!-- Form to take input for candidate name, position, and other details -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="candidate_name">Candidate's Name:</label>
+                <input type="text" id="candidate_name" name="candidate_name" value="{{ candidate_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="position_title">Position Title:</label>
+                <input type="text" id="position_title" name="position_title" value="{{ position_title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="responsibilities">Responsibilities:</label>
+                <textarea id="responsibilities" name="responsibilities" required>{{ responsibilities }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="compensation">Compensation Package:</label>
+                <textarea id="compensation" name="compensation" required>{{ compensation }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="benefits">Benefits:</label>
+                <textarea id="benefits" name="benefits" required>{{ benefits }}</textarea>
+            </div>
+
+            <button type="submit">Generate Offer Letter</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% elif offer_letter %}
+            <h3>Generated Offer Letter:</h3>
+            <pre>{{ offer_letter }}</pre>
+        {% endif %}
+
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+    </div>
+</body>
+</html>

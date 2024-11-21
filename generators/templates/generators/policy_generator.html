@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Policy Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/policy.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>HR Policy Generator</h1>
+      <p>Generate professional policies for your organization with AI.</p>
+
+      <!-- Form -->
+      <form id="policyForm" method="POST">
+        {% csrf_token %}
+        <label for="company_name">Company Name</label>
+        <input type="text" id="company_name" name="company_name" required />
+
+        <label for="country">Country/Region (Optional)</label>
+        <input type="text" id="country" name="country" />
+
+        <label for="policy_name">Policy Name</label>
+        <input type="text" id="policy_name" name="policy_name" required />
+
+        <label for="policy_details">Policy Details</label>
+        <textarea id="policy_details" name="policy_details" required></textarea>
+
+        <label for="email">Company Email Address</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="first_name">Your First Name (Optional)</label>
+        <input type="text" id="first_name" name="first_name" />
+
+        <label for="job_title">Job Title</label>
+        <input type="text" id="job_title" name="job_title" />
+
+        <label for="company_size">Company Size</label>
+        <select id="company_size" name="company_size">
+          <option value="1-50 employees">1-50 employees</option>
+          <option value="51-200 employees">51-200 employees</option>
+          <option value="201-500 employees">201-500 employees</option>
+          <option value="500+ employees">500+ employees</option>
+        </select>
+
+        <button type="submit">Generate Policy</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <!-- Results Section -->
+      <div id="resultSection" style="display: none">
+        <h2>Generated Policy:</h2>
+        <textarea id="generatedPolicy" readonly></textarea>
+        <a id="downloadPolicy" href="#" download="Policy.txt"
+          >Download as TXT</a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("policyForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              document.getElementById("resultSection").style.display = "block";
+              document.getElementById("generatedPolicy").value = data.policy;
+
+              // Download Policy
+              document.getElementById("downloadPolicy").href =
+                URL.createObjectURL(
+                  new Blob([data.policy], { type: "text/plain" })
+                );
+            } else {
+              alert(data.error || "An error occurred.");
+            }
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        });
+    </script>
+  </body>
+</html>

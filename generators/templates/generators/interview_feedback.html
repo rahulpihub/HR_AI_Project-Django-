@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Feedback Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/feedback.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Interview Feedback Generator</h1>
+      <form id="feedbackForm" method="POST">
+        {% csrf_token %}
+        <label for="candidate_name">Candidate Name:</label>
+        <input
+          type="text"
+          id="candidate_name"
+          name="candidate_name"
+          placeholder="e.g., John Doe"
+          required
+        />
+
+        <label for="interviewer_name">Interviewer Name:</label>
+        <input
+          type="text"
+          id="interviewer_name"
+          name="interviewer_name"
+          placeholder="e.g., Jane Smith"
+          required
+        />
+
+        <label for="interview_date">Date of Interview:</label>
+        <input type="date" id="interview_date" name="interview_date" required />
+
+        <label for="job_title">Job Title:</label>
+        <input
+          type="text"
+          id="job_title"
+          name="job_title"
+          placeholder="e.g., Software Engineer"
+          required
+        />
+
+        <label for="feedback_notes">Feedback Notes:</label>
+        <textarea
+          id="feedback_notes"
+          name="feedback_notes"
+          placeholder="e.g., Demonstrated excellent coding skills and teamwork..."
+          rows="6"
+          required
+        ></textarea>
+
+        <button type="submit">Generate Feedback</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <div id="responseSection" style="display: none">
+        <h2>Generated Interview Feedback:</h2>
+        <textarea id="generatedFeedback" readonly></textarea>
+        <button id="downloadButton">Download Feedback</button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("feedbackForm");
+      const responseSection = document.getElementById("responseSection");
+      const generatedFeedback = document.getElementById("generatedFeedback");
+      const downloadButton = document.getElementById("downloadButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            responseSection.style.display = "block";
+            generatedFeedback.textContent = data.feedback;
+
+            // Enable download button functionality
+            downloadButton.onclick = () => {
+              const blob = new Blob([data.feedback], { type: "text/plain" });
+              const link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              link.download = `Interview_Feedback_${formData
+                .get("candidate_name")
+                .replace(" ", "_")}.txt`;
+              link.click();
+            };
+          } else {
+            alert(
+              data.error || "An error occurred while generating the feedback."
+            );
+          }
+        } catch (error) {
+          alert("An unexpected error occurred.");
+        }
+      });
+    </script>
+  </body>
+</html>

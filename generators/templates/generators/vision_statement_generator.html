@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Statement Generator</title>
+    {% load static %}
+    <!-- Linking the CSS file -->
+    <link rel="stylesheet" href="{% static 'css/vs.css' %}">
+</head>
+<body>
+    <h1>Vision Statement Generator for Companies</h1>
+
+    <!-- Form to input company name and description -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name" value="{{ company_name }}" required><br><br>
+
+        <label for="company_description">Company Description:</label><br>
+        <textarea id="company_description" name="company_description" rows="4" required>{{ company_description }}</textarea><br><br>
+
+        <button type="submit">Generate Vision Statement</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% elif vision_statement %}
+        <h3>Generated Vision Statement:</h3>
+        <pre>{{ vision_statement }}</pre>
+    {% endif %}
+
+    <!-- Button to go back to the home page -->
+    <br><br>
+    <a href="{% url 'home' %}"><button>Back to Home</button></a>
+</body>
+</html>

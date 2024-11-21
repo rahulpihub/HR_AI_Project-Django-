@@ -1,0 +1,142 @@
+/* General Reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.container h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #6200ea;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s ease-in-out;
+}
+
+input:focus, textarea:focus {
+    border-color: #4caf50;
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.home-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: #2ecc71;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.home-button:hover {
+    background-color: #27ae60;
+}
+
+/* Button Styles */
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#submit{
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #4c82af;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #d0e646;
+}
+
+
+/* Response Section */
+/* Response Section */
+#responseSection {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f0f8f5;
+    border: 2px solid #4caf50;
+    border-radius: 8px;
+    width: 100%; /* Ensures it takes full container width */
+    max-width: 750px; /* Optional: Prevents it from becoming too wide */
+    min-height: 200px; /* Ensures a decent height even if the content is short */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for emphasis */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#responseSection h2 {
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    color: #4caf50;
+    text-align: center; /* Center the heading for better presentation */
+}
+
+#generatedReview {
+    width: 100%;
+    height: 150px; /* Ensures a consistent height for the textarea */
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    resize: vertical; /* Allows users to resize the textarea vertically if needed */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds slight depth to the textarea */
+}
+

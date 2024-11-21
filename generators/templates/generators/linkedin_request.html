@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkedIn Connection Request Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/linkedinreq.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>LinkedIn Connection Request Generator</h1>
+      <p>Craft a personalized connection request on LinkedIn to expand your professional network</p>
+      <form id="linkedinForm" method="POST">
+        {% csrf_token %}
+        <label for="your_name">Your Name:</label>
+        <input
+          type="text"
+          id="your_name"
+          name="your_name"
+          placeholder="E.g., John Doe"
+          required
+        />
+
+        <label for="your_goals">Your Goals:</label>
+        <textarea
+          id="your_goals"
+          name="your_goals"
+          placeholder="E.g., Find a new job in software development"
+          rows="3"
+          required
+        ></textarea>
+
+        <label for="person_name">Person's Name:</label>
+        <input
+          type="text"
+          id="person_name"
+          name="person_name"
+          placeholder="E.g., Jane Smith"
+          required
+        />
+
+        <label for="how_you_know_them">How You Know Them:</label>
+        <textarea
+          id="how_you_know_them"
+          name="how_you_know_them"
+          placeholder="E.g., Met at a tech conference"
+          rows="3"
+          required
+        ></textarea>
+
+        <label for="specific_action">Specific Action Requested:</label>
+        <textarea
+          id="specific_action"
+          name="specific_action"
+          placeholder="E.g., Meet for a virtual coffee chat"
+          rows="3"
+          required
+        ></textarea>
+
+        <button type="submit">Generate Connection Request</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <div id="responseSection" style="display: none">
+        <h2>Generated LinkedIn Connection Request:</h2>
+        <textarea id="generatedMessage" readonly></textarea>
+        <button id="downloadButton">Download Request</button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("linkedinForm");
+      const responseSection = document.getElementById("responseSection");
+      const generatedMessage = document.getElementById("generatedMessage");
+      const downloadButton = document.getElementById("downloadButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            responseSection.style.display = "block";
+            generatedMessage.textContent = data.message;
+
+            // Enable download button functionality
+            downloadButton.onclick = () => {
+              const blob = new Blob([data.message], { type: "text/plain" });
+              const link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              link.download = `LinkedIn_Connection_Request_${formData
+                .get("person_name")
+                .replace(" ", "_")}.txt`;
+              link.click();
+            };
+          } else {
+            alert(
+              data.error || "An error occurred while generating the request."
+            );
+          }
+        } catch (error) {
+          alert("An unexpected error occurred.");
+        }
+      });
+    </script>
+  </body>
+</html>

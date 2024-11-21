@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OKR Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/okr.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>OKR Generator</h1>
+      <p>Generate actionable Key Results for your Objectives.</p>
+
+      <!-- Form to input Objective -->
+      <form id="okrForm" method="POST">
+        {% csrf_token %}
+        <label for="objective">Objective</label>
+        <input
+          type="text"
+          id="objective"
+          name="objective"
+          placeholder="Example: Increase revenue by 10%"
+          required
+        />
+
+        <button type="submit">Generate Key Results</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <!-- Display generated Key Results -->
+      <div id="resultSection" style="display: none">
+        <h2>Key Results:</h2>
+        <textarea id="generatedResults" readonly></textarea>
+        <a id="downloadLink" href="#" download="Key_Results.txt"
+          >Download Key Results</a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("okrForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              document.getElementById("resultSection").style.display = "block";
+              document.getElementById("generatedResults").value =
+                data.key_results;
+
+              const downloadLink = document.getElementById("downloadLink");
+              downloadLink.href = URL.createObjectURL(
+                new Blob([data.key_results], { type: "text/plain" })
+              );
+            } else {
+              alert(data.error || "An error occurred.");
+            }
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        });
+    </script>
+  </body>
+</html>

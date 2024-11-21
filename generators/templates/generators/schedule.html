@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Schedule Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Staff Schedule Generator</h1>
+      <p>
+        Create a professional and detailed staff schedule for your team or
+        organization.
+      </p>
+
+      <!-- Form -->
+      <form id="scheduleForm" method="POST">
+        {% csrf_token %}
+        <label for="team_name">Team/Organization Name</label>
+        <input type="text" id="team_name" name="team_name" required />
+
+        <label for="team_members">Team Members</label>
+        <textarea id="team_members" name="team_members" required></textarea>
+
+        <label for="roles">Roles (optional)</label>
+        <textarea id="roles" name="roles"></textarea>
+
+        <label for="availability">Availability (optional)</label>
+        <textarea id="availability" name="availability"></textarea>
+
+        <label for="time_frame">Time Frame</label>
+        <select id="time_frame" name="time_frame">
+          <option value="Weekly">Weekly</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Custom">Custom</option>
+        </select>
+
+        <button type="submit">Generate Schedule</button>
+         <!-- Button for the home page -->
+         <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <!-- Results Section -->
+      <div id="resultSection" style="display: none">
+        <h2>Generated Schedule:</h2>
+        <textarea id="generatedSchedule" readonly></textarea>
+        <a id="downloadTxt" href="#" download="Staff_Schedule.txt"
+          >Download as TXT</a
+        >
+        <a id="downloadCsv" href="#" download="Staff_Schedule.csv"
+          >Download as CSV</a
+        >
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("scheduleForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+
+          try {
+            const response = await fetch("", {
+              method: "POST",
+              body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              document.getElementById("resultSection").style.display = "block";
+              document.getElementById("generatedSchedule").value =
+                data.schedule;
+
+              // Download TXT
+              document.getElementById("downloadTxt").href = URL.createObjectURL(
+                new Blob([data.schedule], { type: "text/plain" })
+              );
+
+              // Download CSV
+              document.getElementById("downloadCsv").href = URL.createObjectURL(
+                new Blob([data.csv], { type: "text/csv" })
+              );
+            } else {
+              alert(data.error || "An error occurred.");
+            }
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        });
+    </script>
+  </body>
+</html>

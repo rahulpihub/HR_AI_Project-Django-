@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bio.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Bio Generator Section -->
+    <div class="container">
+        <h1>Bio Generator</h1>
+        <p class="description">
+            Craft your professional bio effortlessly! Fill in the details below, and let us generate a stunning bio for you.
+        </p>
+        <form id="bioForm" method="post" class="bio-form">
+            {% csrf_token %}
+            <label for="profession_description">Describe your profession:</label>
+            <textarea id="profession_description" name="profession_description" placeholder="Describe your role, achievements, and goals..."></textarea>
+            <input type="submit" value="Generate Professional Bio" class="btn-primary">
+            <!-- Button for the home page -->
+            <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+        </form>
+
+        <!-- Results Section -->
+        <div id="resultSection" style="display: none;">
+            <h2>Generated Professional Bios:</h2>
+            <textarea id="generatedBios" readonly></textarea>
+            <a id="downloadLink" href="#" download="Generated_Bios.txt">Download</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bioForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch("", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Display the result section
+                    document.getElementById("resultSection").style.display = "block";
+                    document.getElementById("generatedBios").value = data.generated_bios;
+
+                    // Set up download link
+                    document.getElementById("downloadLink").href = URL.createObjectURL(
+                        new Blob([data.generated_bios], { type: "text/plain" })
+                    );
+                } else {
+                    alert(data.error || "An error occurred.");
+                }
+            } catch (error) {
+                alert("An unexpected error occurred.");
+            }
+        });
+    </script>
+
+</body>
+</html>

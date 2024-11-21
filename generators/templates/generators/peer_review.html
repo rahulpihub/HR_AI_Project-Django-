@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peer Review Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/peer.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Peer Review Generator</h1>
+      <p>
+        Generate a constructive peer review for your colleague or team member.
+      </p>
+
+      <form id="peerReviewForm" method="POST">
+        {% csrf_token %}
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter the name of the person being reviewed"
+          maxlength="100"
+          required
+        />
+
+        <label for="overall_feedback">Overall Feedback</label>
+        <textarea
+          id="overall_feedback"
+          name="overall_feedback"
+          placeholder="Enter overall feedback (max 1000 characters)"
+          maxlength="1000"
+          required
+        ></textarea>
+
+        <label for="key_strengths">Key Strengths</label>
+        <textarea
+          id="key_strengths"
+          name="key_strengths"
+          placeholder="Enter key strengths (comma-separated, max 200 characters)"
+          maxlength="200"
+          required
+        ></textarea>
+
+        <label for="areas_for_improvement">Areas for Improvement</label>
+        <textarea
+          id="areas_for_improvement"
+          name="areas_for_improvement"
+          placeholder="Enter areas for improvement (comma-separated)"
+          maxlength="200"
+          required
+        ></textarea>
+
+        <button type="submit">Generate Peer Review</button>
+
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <div id="responseSection" style="display: none">
+        <h2>Generated Peer Review:</h2>
+        <textarea id="generatedReview" readonly></textarea>
+        <button id="downloadButton">Download Peer Review</button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("peerReviewForm");
+      const responseSection = document.getElementById("responseSection");
+      const generatedReview = document.getElementById("generatedReview");
+      const downloadButton = document.getElementById("downloadButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        try {
+          const response = await fetch("", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            responseSection.style.display = "block";
+            generatedReview.textContent = data.review;
+
+            downloadButton.onclick = () => {
+              const blob = new Blob([data.review], { type: "text/plain" });
+              const link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              link.download = "Peer_Review.txt";
+              link.click();
+            };
+          } else {
+            alert(
+              data.error || "An error occurred while generating the review."
+            );
+          }
+        } catch (error) {
+          alert("An unexpected error occurred.");
+        }
+      });
+    </script>
+  </body>
+</html>

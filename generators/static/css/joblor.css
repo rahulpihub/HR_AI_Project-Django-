@@ -1,0 +1,131 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px; /* Reduced container width */
+    background-color: #ffffff;
+    padding: 12px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 1.2em; /* Smaller font size */
+    color: #6200ea;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Reduced gap between inputs */
+}
+
+label {
+    font-size: 0.9em;
+    color: #333;
+}
+
+input, textarea {
+    padding: 6px; /* Reduced padding */
+    font-size: 0.85em; /* Smaller font size */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #6200ea;
+}
+
+textarea {
+    height: 60px; /* Reduced height */
+    resize: none;
+}
+
+button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    padding: 6px 0;
+    font-size: 0.9em; /* Smaller font size */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5200d6;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.85em; /* Smaller font size */
+    margin-top: 10px;
+}
+
+h2 {
+    color: #6200ea;
+    font-size: 1.05em; /* Slightly smaller font size */
+    margin-top: 15px;
+    text-align: center;
+}
+
+pre {
+    font-size: 0.85em;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 8px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: left;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        max-width: 90%;
+        padding: 8px; /* Reduced padding */
+    }
+
+    h1 {
+        font-size: 1.05em; /* Smaller title */
+    }
+
+    label, input, textarea, button {
+        font-size: 0.8em; /* Smaller font size */
+    }
+
+    textarea {
+        height: 50px; /* Smaller textarea height */
+    }
+
+    button {
+        padding: 5px 0;
+    }
+
+    h2 {
+        font-size: 0.95em; /* Slightly smaller heading */
+    }
+
+    pre {
+        font-size: 0.8em; /* Smaller pre font size */
+    }
+}

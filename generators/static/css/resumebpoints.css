@@ -1,0 +1,157 @@
+/* General Reset */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Heading Styles */
+.container h1 {
+  font-size: 2.5em;
+  color: #6200ea;
+  margin-bottom: 10px;
+}
+
+.container p {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+form label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form textarea {
+  resize: vertical;
+  min-height: 80px; /* Reduced height */
+  max-height: 200px;
+}
+
+form button {
+  padding: 10px 18px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+.home-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 18px;
+  background-color: #2ecc71;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.home-button:hover {
+  background-color: #27ae60;
+}
+
+/* Response Section */
+#responseSection {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e9f7ef;
+  border: 1px solid #d4edda;
+  border-radius: 4px;
+  text-align: left;
+}
+
+#responseSection h2 {
+  font-size: 1.4rem;
+  color: #155724;
+}
+
+#generatedBulletPoints {
+  width: 100%;
+  padding: 8px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+  min-height: 100px; /* Reduced height */
+  max-height: 200px; /* Limit maximum height */
+  overflow-y: auto; /* Add scrollbar if content exceeds height */
+}
+
+#responseSection button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#responseSection button:hover {
+  background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  form button,
+  #responseSection button {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  #responseSection {
+    padding: 10px;
+  }
+
+  #generatedBulletPoints {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
+}

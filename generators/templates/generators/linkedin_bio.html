@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Bio Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/linkedin.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>LinkedIn Bio Generator</h1>
+        <form id="linkedinBioForm" method="POST">
+            {% csrf_token %}
+            <label for="personal_info">Enter your personal information:</label>
+            <textarea name="personal_info" id="personal_info" placeholder="e.g., I am a data scientist with 5 years of experience..." rows="10" required></textarea>
+            <button type="submit">Generate LinkedIn Bio</button>
+            <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+        </form>
+
+        <div id="responseSection" style="display: none;">
+            <h2>Generated LinkedIn Bio:</h2>
+            <textarea id="generatedBio" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("linkedinBioForm");
+        const responseSection = document.getElementById("responseSection");
+        const generatedBio = document.getElementById("generatedBio");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseSection.style.display = "block";
+                    generatedBio.textContent = data.bio;
+                } else {
+                    alert(data.error || "An error occurred while generating the LinkedIn bio.");
+                }
+            } catch (error) {
+                alert("An unexpected error occurred.");
+            }
+        });
+    </script>
+</body>
+</html>

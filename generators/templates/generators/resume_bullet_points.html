@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Bullet Point Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/resumebpoints.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Resume Bullet Point Generator</h1>
+      <p>Generate professional bullet points for your resume in seconds.</p>
+
+      <form id="bulletPointForm" method="POST">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">Generate Resume Bullet Points</button>
+        <!-- Button for the home page -->
+        <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+      </form>
+
+      <div id="responseSection" style="display: none">
+        <h2>Generated Bullet Points:</h2>
+        <textarea id="generatedBulletPoints" readonly></textarea>
+        <button id="downloadButton">Download Bullet Points</button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("bulletPointForm");
+      const responseSection = document.getElementById("responseSection");
+      const generatedBulletPoints = document.getElementById(
+        "generatedBulletPoints"
+      );
+      const downloadButton = document.getElementById("downloadButton");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            responseSection.style.display = "block";
+            generatedBulletPoints.textContent = data.bullet_points;
+
+            downloadButton.onclick = () => {
+              const blob = new Blob([data.bullet_points], {
+                type: "text/plain",
+              });
+              const link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              link.download = "Resume_Bullet_Points.txt";
+              link.click();
+            };
+          } else {
+            alert(
+              data.error || "An error occurred while generating bullet points."
+            );
+          }
+        } catch (error) {
+          alert("An unexpected error occurred.");
+        }
+      });
+    </script>
+  </body>
+</html>

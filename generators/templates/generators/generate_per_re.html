@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Review Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/gen_rew.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Performance Review Generator</h1>
+        <form id="performanceReviewForm" method="POST">
+            {% csrf_token %}
+            <label for="employee_name">Employee Name:</label>
+            <input type="text" id="employee_name" name="employee_name" placeholder="e.g., John Doe" required>
+
+            <label for="job_title">Job Title:</label>
+            <input type="text" id="job_title" name="job_title" placeholder="e.g., Software Engineer" required>
+
+            <label for="key_achievements">Key Achievements:</label>
+            <textarea id="key_achievements" name="key_achievements" placeholder="e.g., Improved team productivity by 20%..." rows="6" required></textarea>
+
+            <button type="submit">Generate Performance Review</button>
+            <a href="{% url 'home' %}" class="home-button">Back to Home</a>
+        </form>
+
+        <div id="responseSection" style="display: none;">
+            <h2>Generated Performance Review:</h2>
+            <textarea id="generatedReview" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("performanceReviewForm");
+        const responseSection = document.getElementById("responseSection");
+        const generatedReview = document.getElementById("generatedReview");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseSection.style.display = "block";
+                    generatedReview.textContent = data.review;
+                } else {
+                    alert(data.error || "An error occurred while generating the performance review.");
+                }
+            } catch (error) {
+                alert("An unexpected error occurred.");
+            }
+        });
+    </script>
+</body>
+</html>

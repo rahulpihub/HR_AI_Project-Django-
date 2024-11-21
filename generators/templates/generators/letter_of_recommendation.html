@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter of Recommendation Generator</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/joblor.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Letter of Recommendation Generator</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="name">Name of the Person You Want to Recommend:</label>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="job_title">Their Job Title:</label>
+            <input type="text" id="job_title" name="job_title" required><br><br>
+
+            <label for="relationship">Your Relationship with the Person:</label>
+            <input type="text" id="relationship" name="relationship" required><br><br>
+
+            <label for="strengths">Describe Their Strengths, Skills, and Achievements:</label>
+            <textarea id="strengths" name="strengths" required></textarea><br><br>
+
+            <label for="reason_for_fit">Why Are They a Good Fit for the Job?</label>
+            <textarea id="reason_for_fit" name="reason_for_fit" required></textarea><br><br>
+
+            <button type="submit">Generate Letter</button>
+        </form>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        {% if letter %}
+            <h2>Generated Letter of Recommendation:</h2>
+            <pre>{{ letter }}</pre>
+        {% endif %}
+    </div>
+</body>
+</html>

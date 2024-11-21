@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNS HR Gen AI Tools</title>
+    {% load static %}
+    <!-- Linking the CSS file -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <div class="logo">SNS HR Gen AI Tools</div>
+        <button class="toggle-btn" onclick="toggleNavbar()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Help</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <h1>Welcome to SNS Gen AI Tools</h1>
+        <div class="button-container">
+            <button onclick="window.location.href='{% url 'bio_generator' %}'">Bio Generator</button>
+            <button onclick="window.location.href='{% url 'interview_answer' %}'">Interview Answer Generator</button>
+            <button onclick="window.location.href='{% url 'interview_question_generator' %}'">Interview Question Generator</button>
+            <button onclick="window.location.href='{% url 'job_responsibilities_generator' %}'">Job Responsibilities Generator</button>
+            <button onclick="window.location.href='{% url 'job_description_generator' %}'">Job Description Generator</button>
+            <button onclick="window.location.href='{% url 'job_title_generator' %}'">Job Title Generator</button>
+            <button onclick="window.location.href='{% url 'letter_of_recommendation' %}'">Letter of Recommendation Generator</button>
+            <button onclick="window.location.href='{% url 'mission_statement_generator' %}'">Mission Statement Generator</button>
+            <button onclick="window.location.href='{% url 'offer_letter_generator' %}'">Offer Letter Generator</button>
+            <button onclick="window.location.href='{% url 'job_qualification_generator' %}'">Job Qualification Generator</button>
+            <button onclick="window.location.href='{% url 'skills_generator' %}'">Skills Generator</button>
+            <button onclick="window.location.href='{% url 'vision_statement_generator' %}'">Vision Statement Generator</button>
+            <button onclick="window.location.href='{% url 'speech_writer' %}'">Speech Writer Generator</button>
+            <button onclick="window.location.href='{% url 'character_reference' %}'">Character Reference letter </button>
+            <button onclick="window.location.href='{% url 'linkedin_bio_generator' %}'">linkedin bio generator</button>
+            <button onclick="window.location.href='{% url 'performance_review' %}'">performance review generator</button>
+            <button onclick="window.location.href='{% url 'interview_feedback' %}'">Interview Feedback Generator</button>
+            <button onclick="window.location.href='{% url 'linkedin_request' %}'">LinkedIn Connection Request Generator</button>
+            <button onclick="window.location.href='{% url 'resume_bullet_generator' %}'">Resume Bullet Point Generator</button>
+            <button onclick="window.location.href='{% url 'peer_review_generator' %}'">Peer Review Generator</button>
+            <button onclick="window.location.href='{% url 'sop_generator' %}'">SOP Generator</button>
+            <button onclick="window.location.href='{% url 'linkedin_post_generator' %}'">LinkedIn Post Generator</button>
+            <button onclick="window.location.href='{% url 'job_summary_generator' %}'">Job Summary Generator</button>
+            <button onclick="window.location.href='{% url 'okr_generator' %}'">OKR Generator</button>
+            <button onclick="window.location.href='{% url 'kpi_generator' %}'">KPI Generator</button>
+            <button onclick="window.location.href='{% url 'schedule_view' %}'">Staff Schedule Generator</button>
+            <button onclick="window.location.href='{% url 'policy_generator' %}'">Policy Generator</button>  
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        © 2024 SNS Gen AI Tools. All Rights Reserved.
+    </footer>
+
+    <!-- Script for Toggle Navbar -->
+    <script>
+        function toggleNavbar() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
