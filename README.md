@@ -1,5 +1,5 @@
 
-# Django Web Application
+# SNS HR GEN AI TOOLS
 
 This is a Django-based web application designed for [SNS HR GEN AI TOOLS ]. The project leverages Django's Model-View-Template (MVT) architecture to deliver a scalable and robust web application.
 
